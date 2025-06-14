@@ -12,4 +12,7 @@ public interface IAdminService {
 	public User secretaryLogin(String email, Role role, String password);
 	
 	public User securityLogin(String email, Role role, String password);
+	
+	public User accountantLogin(String email, User.Role role, String password);
+
 }

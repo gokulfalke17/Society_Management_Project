@@ -12,9 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.society.entity.Admin;
 import com.society.entity.User;
-import com.society.repository.IMemberRepository;
 import com.society.service.IAdminService;
-import com.society.service.IUserService;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -24,11 +22,7 @@ public class AdminController {
 	@Autowired
 	private IAdminService adminService;
 
-	@Autowired
-	private IUserService userService;
-
-	@Autowired
-	private IMemberRepository memberRepository;
+	
 
 //------------------------------------------Admin Login------------------------------------------    
 
@@ -139,32 +133,71 @@ public class AdminController {
 	public String securityMember(@PathVariable("role") String role) {
 		return "security-login";
 	}
-	
 
 	@PostMapping("/security-login/{role}")
 	@ResponseBody
-	public ResponseEntity<String> securityMember(@RequestBody User loginRequest, HttpSession session) {
-	
-		User security = adminService.secretaryLogin(loginRequest.getEmail(), User.Role.SECRETARY, 
+	public ResponseEntity<String> securityLogin(@PathVariable("role") String role,
+	                                             @RequestBody User loginRequest,
+	                                             HttpSession session) {
+	   
+		User security = adminService.securityLogin(loginRequest.getEmail(), User.Role.SECURITY, 
 				loginRequest.getPassword());
-	
+
 		if (security != null) {
-			session.setAttribute("security", security);
+			session.setAttribute("security", security); 
 			return ResponseEntity.ok("Security Login Successful...");
 		} else {
 			return ResponseEntity.status(401).body("Invalid credentials.");
 		}
 	}
-	
-	@GetMapping("/security-login")
+
+	@GetMapping("/security-dashboard")
 	public String showSecurityDashboard(HttpSession session, Model model) {
-		User security = (User) session.getAttribute("security");
+		User security = (User) session.getAttribute("security"); 
 		if (security == null) {
 			return "redirect:/security-login/" + User.Role.SECURITY.name();
 		}
-	
+
 		model.addAttribute("security", security);
 		return "security-dashboard";
 	}
 	
+	
+//------------------------------------------Accountant Login------------------------------------------
+
+	
+	@GetMapping("/accountant-login/{role}")
+	public String accountantLoginPage(@PathVariable("role") String role) {
+	    return "accountant-login"; 
+	}
+
+	@PostMapping("/accountant-login/{role}")
+	@ResponseBody
+	public ResponseEntity<String> accountantLogin(@PathVariable("role") String role,
+	                                              @RequestBody User loginRequest,
+	                                              HttpSession session) {
+
+	    User accountant = adminService.accountantLogin(loginRequest.getEmail(), User.Role.ACCOUNTANT,
+	            loginRequest.getPassword());
+
+	    if (accountant != null) {
+	        session.setAttribute("accountant", accountant);
+	        return ResponseEntity.ok("Accountant Login Successful...");
+	    } else {
+	        return ResponseEntity.status(401).body("Invalid credentials.");
+	    }
+	}
+
+	@GetMapping("/accountant-dashboard")
+	public String showAccountantDashboard(HttpSession session, Model model) {
+	    User accountant = (User) session.getAttribute("accountant");
+	    if (accountant == null) {
+	        return "redirect:/accountant-login/" + User.Role.ACCOUNTANT.name();
+	    }
+
+	    model.addAttribute("accountant", accountant);
+	    return "accountant-dashboard";
+	}
+
+
 }

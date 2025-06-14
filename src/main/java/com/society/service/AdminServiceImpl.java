@@ -70,7 +70,7 @@ public class AdminServiceImpl implements IAdminService {
 
 	@Override
 	public User securityLogin(String email, Role role, String password) {
-		Optional<User> security = adminRepository.secretaryLogin(email, role);
+		Optional<User> security = adminRepository.securityLogin(email, role);
         if (!security.isPresent()) {
             return null;
         }
@@ -83,6 +83,19 @@ public class AdminServiceImpl implements IAdminService {
         } else {
             return null;
         }
+	}
+
+	
+	@Override
+	public User accountantLogin(String email, Role role, String password) {
+	    Optional<User> optionalUser = adminRepository.securityLogin(email, role);
+	    if (!optionalUser.isPresent()) {
+	        return null;
+	    }
+
+	    User accountant = optionalUser.get();
+	    boolean matches = passwordEncoder.matches(password, accountant.getPassword());
+	    return matches ? accountant : null;
 	}
 
 

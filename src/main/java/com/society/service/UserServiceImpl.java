@@ -46,4 +46,9 @@ public class UserServiceImpl implements IUserService {
         userRepository.deleteById(id);
     }
 
+	@Override
+	public List<User> getAllUsers(User.Role role) {
+		return userRepository.getAllUsersWithMembers(role);
+	}
+
 }

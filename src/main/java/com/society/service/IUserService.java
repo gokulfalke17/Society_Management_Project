@@ -10,5 +10,7 @@ public interface IUserService {
 	public void deleteUserById(Integer id);
     public List<String> getUserMemberByUserId(Integer id);
 	public List<User> findAll();
+	
+	public List<User> getAllUsers(User.Role role);
 		
 }
