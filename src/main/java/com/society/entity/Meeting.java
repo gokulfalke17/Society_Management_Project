@@ -24,5 +24,6 @@ public class Meeting {
 	private String description;
 	private LocalDateTime scheduledAt;
 	private String location;
+	private String status;
 	//private String minutes;
 }

@@ -8,5 +8,6 @@ public interface IMeetingService {
 	public Meeting scheduleMeeting(Meeting meeting);
 	public List<Meeting> getUpcomingMeetings();
 	public List<Meeting> viewAllMeetings();
+
 	
 }

@@ -16,9 +16,10 @@ public class MeetingServiceImpl implements IMeetingService {
 	private IMeetingRepository meetingRepository;
 
 	@Override
-	public Meeting scheduleMeeting(Meeting meeting) {
-		return meetingRepository.save(meeting);
-	}
+    public Meeting scheduleMeeting(Meeting meeting) {
+        meeting.setStatus("UPCOMING"); 
+        return meetingRepository.save(meeting);
+    }
 
 	
 	@Override

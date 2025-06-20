@@ -1,142 +1,147 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>Update User</title>
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-	rel="stylesheet" />
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
-	rel="stylesheet" />
+    <title>Update User</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
 </head>
 <body>
 
 <div th:replace="~{fragments/admin-navbar :: admin-navbar}"></div>
 
-	<div class="container my-5">
-		<div class="card shadow border-success">
-			<div class="card-header bg-success text-white">
-				<h4>
-					<i class="bi bi-person-lines-fill me-2"></i>Update User
-				</h4>
-			</div>
-			<div class="card-body">
-				<form th:action="@{/update-user}" method="post" th:object="${user}">
-					<input type="hidden" th:field="*{userId}" />
+<div class="container my-5">
+    <div class="card shadow border-success">
+        <div class="card-header bg-success text-white">
+            <h4><i class="bi bi-person-lines-fill me-2"></i>Update User</h4>
+        </div>
+        <div class="card-body">
+            <form th:action="@{/update-user}" method="post" th:object="${user}">
+                <input type="hidden" th:field="*{userId}" />
 
-					<div class="mb-3">
-						<label class="form-label">Name</label> <input type="text"
-							class="form-control" th:field="*{name}" required />
-					</div>
+                <div class="mb-3">
+                    <label class="form-label">Name</label>
+                    <input type="text" class="form-control" th:field="*{name}" required />
+                </div>
 
-					<div class="mb-3">
-						<label class="form-label">Email</label> <input type="email"
-							class="form-control" th:field="*{email}" required />
-					</div>
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-control" th:field="*{email}" required />
+                </div>
 
-					<div class="mb-3">
-						<label class="form-label">Password</label> <input type="password"
-							class="form-control" th:field="*{password}"
-							placeholder="Leave blank to keep current password" />
-					</div>
+                <div class="mb-3">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-control" th:field="*{password}"
+                           placeholder="Leave blank to keep current password" />
+                </div>
 
-					<div class="mb-3">
-						<label class="form-label">Role</label> <select class="form-select"
-							th:field="*{role}" id="roleSelect" disabled>
-							<option th:value="ADMIN">ADMIN</option>
-							<option th:value="SECRETARY">SECRETARY</option>
-							<option th:value="MEMBER">MEMBER</option>
-							<option th:value="SECURITY">SECURITY</option>
-							<option th:value="ACCOUNTANT">ACCOUNTANT</option>
-						</select> <input type="hidden" th:field="*{role}" />
-					</div>
+                <div class="mb-3">
+                    <label class="form-label">Role</label>
+                    <select class="form-select" th:field="*{role}" id="roleSelect" disabled>
+                        <option th:value="ADMIN">ADMIN</option>
+                        <option th:value="SECRETARY">SECRETARY</option>
+                        <option th:value="MEMBER">MEMBER</option>
+                        <option th:value="SECURITY">SECURITY</option>
+                        <option th:value="ACCOUNTANT">ACCOUNTANT</option>
+                    </select>
+                    <input type="hidden" th:field="*{role}" />
+                </div>
 
-					<div id="memberDetails" style="display: none;">
-						<hr />
-						<h5 class="text-primary">Member Details</h5>
+                <div id="memberDetails" style="display: none;">
+                    <hr />
+                    <h5 class="text-primary">Member Details</h5>
 
-						<div class="mb-3">
-							<label class="form-label">Number of Members</label> <input
-								type="number" min="0" class="form-control"
-								th:field="*{numberOfMembers}" id="numberOfMembers" />
-						</div>
+                    <div class="mb-3">
+                        <label class="form-label">Number of Members</label>
+                        <input type="number" min="0" class="form-control"
+                               th:field="*{numberOfMembers}" id="numberOfMembers" />
+                    </div>
 
-						<div class="mb-3">
-							<label class="form-label">Member Names</label>
-							<div id="memberNamesContainer">
-								<div th:each="name : ${memberNames}">
-									<input type="text" name="memberNames" class="form-control mb-2"
-										th:value="${name}" />
-								</div>
-								<div th:if="${#lists.isEmpty(memberNames)}">
-									<input type="text" name="memberNames" class="form-control mb-2" />
-								</div>
-							</div>
-							<button type="button" class="btn btn-outline-secondary btn-sm"
-								id="addMemberNameBtn">
-								<i class="bi bi-plus-circle"></i> Add Member Name
-							</button>
-						</div>
-					</div>
+                    <div class="mb-3">
+                        <label class="form-label">Family Members (Name & Age)</label>
+                        <div id="memberFieldsContainer">
+                            <div th:each="member : ${user.members}">
+                                <div class="row mb-2">
+                                    <div class="col-md-7">
+                                        <input type="text" name="memberNames" class="form-control"
+                                               th:value="${member.name}" placeholder="Member Name" />
+                                    </div>
+                                    <div class="col-md-5">
+                                        <input type="number" name="memberAges" class="form-control"
+                                               th:value="${member.age}" placeholder="Age" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div th:if="${#lists.isEmpty(user.members)}">
+                                <div class="row mb-2">
+                                    <div class="col-md-7">
+                                        <input type="text" name="memberNames" class="form-control" placeholder="Member Name" />
+                                    </div>
+                                    <div class="col-md-5">
+                                        <input type="number" name="memberAges" class="form-control" placeholder="Age" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-					<div class="mt-4">
-						<button type="submit" class="btn btn-primary">
-							<i class="bi bi-check-lg me-1"></i>Update
-						</button>
-						<a href="/user-list" class="btn btn-secondary ms-2"> <i
-							class="bi bi-arrow-left"></i> Cancel
-						</a>
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
+                        <button type="button" class="btn btn-outline-secondary btn-sm mt-2" id="addMemberBtn">
+                            <i class="bi bi-plus-circle"></i> Add Member
+                        </button>
+                    </div>
+                </div>
 
-	<script>
-        const memberDetails = document.getElementById('memberDetails');
-        const addMemberNameBtn = document.getElementById('addMemberNameBtn');
-        const numberOfMembersInput = document.getElementById('numberOfMembers');
-        const memberNamesContainer = document.getElementById('memberNamesContainer');
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check-lg me-1"></i>Update
+                    </button>
+                    <a href="/user-list" class="btn btn-secondary ms-2">
+                        <i class="bi bi-arrow-left"></i> Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
-        function getRoleValue() {
-            const roleSelect = document.getElementById('roleSelect');
-            const hiddenRoleInput = document.querySelector('input[name="role"]');
-            return roleSelect ? roleSelect.value : (hiddenRoleInput ? hiddenRoleInput.value : null);
-        }
+<script>
+    const memberDetails = document.getElementById('memberDetails');
+    const roleSelect = document.getElementById('roleSelect');
+    const numberOfMembersInput = document.getElementById('numberOfMembers');
+    const memberFieldsContainer = document.getElementById('memberFieldsContainer');
+    const addMemberBtn = document.getElementById('addMemberBtn');
 
-        function toggleMemberDetails() {
-            if (getRoleValue() === 'MEMBER') {
-                memberDetails.style.display = 'block';
-                updateAddButtonVisibility();
-            } else {
-                memberDetails.style.display = 'none';
-                numberOfMembersInput.value = '';
-                memberNamesContainer.innerHTML = '';
-            }
-        }
+    function toggleMemberSection() {
+        const role = roleSelect ? roleSelect.value : document.querySelector('input[name="role"]').value;
+        memberDetails.style.display = (role === 'MEMBER') ? 'block' : 'none';
+        updateAddButtonVisibility();
+    }
 
-        function updateAddButtonVisibility() {
-            const max = parseInt(numberOfMembersInput.value || '0');
-            const currentCount = document.querySelectorAll('input[name="memberNames"]').length;
-            addMemberNameBtn.style.display = currentCount >= max ? 'none' : 'inline-block';
-        }
+    function updateAddButtonVisibility() {
+        const max = parseInt(numberOfMembersInput.value || 0);
+        const current = memberFieldsContainer.querySelectorAll('input[name="memberNames"]').length;
+        addMemberBtn.style.display = current < max ? 'inline-block' : 'none';
+    }
 
-        if (addMemberNameBtn) {
-            addMemberNameBtn.addEventListener('click', () => {
-                const input = document.createElement('input');
-                input.type = 'text';
-                input.name = 'memberNames';
-                input.className = 'form-control mb-2';
-                memberNamesContainer.appendChild(input);
-                updateAddButtonVisibility();
-            });
-        }
+    numberOfMembersInput?.addEventListener('input', updateAddButtonVisibility);
 
-        if (numberOfMembersInput) {
-            numberOfMembersInput.addEventListener('input', updateAddButtonVisibility);
-        }
+    addMemberBtn?.addEventListener('click', () => {
+        const memberRow = document.createElement('div');
+        memberRow.className = 'row mb-2';
 
-        toggleMemberDetails();
-    </script>
+        memberRow.innerHTML = `
+            <div class="col-md-7">
+                <input type="text" name="memberNames" class="form-control" placeholder="Member Name" />
+            </div>
+            <div class="col-md-5">
+                <input type="number" name="memberAges" class="form-control" placeholder="Age" />
+            </div>
+        `;
+
+        memberFieldsContainer.appendChild(memberRow);
+        updateAddButtonVisibility();
+    });
+
+    toggleMemberSection();
+</script>
+
 </body>
 </html>

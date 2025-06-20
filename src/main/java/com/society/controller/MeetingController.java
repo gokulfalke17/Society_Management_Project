@@ -3,6 +3,7 @@ package com.society.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.society.entity.Meeting;
 import com.society.entity.User;
+import com.society.repository.IMeetingRepository;
 import com.society.service.IMeetingService;
 import com.society.service.IUserService;
 
@@ -20,6 +22,9 @@ public class MeetingController {
 
     @Autowired
     private IMeetingService meetingService;
+    
+    @Autowired
+    private IMeetingRepository meetingRepository;
     
     @Autowired
     private IUserService userService;
@@ -49,6 +54,15 @@ public class MeetingController {
         List<Meeting> allMeetings = meetingService.viewAllMeetings();
         model.addAttribute("allMeetings", allMeetings);
         return "all-meetings"; 
+    }
+    
+    @Scheduled(cron = "0 0/10 * * * *") 
+    public void updateMeetingStatuses() {
+        List<Meeting> outdatedMeetings = meetingRepository.findMeetingsToMarkAsCompleted();
+        for (Meeting meeting : outdatedMeetings) {
+            meeting.setStatus("COMPLETED");
+        }
+        meetingRepository.saveAll(outdatedMeetings);
     }
     
     

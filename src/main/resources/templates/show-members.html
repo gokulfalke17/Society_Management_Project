@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Society Members</title>
+    <title>Show All Members</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
@@ -11,35 +11,40 @@
 
     <div th:replace="~{fragments/secretary-navbar :: secretary-navbar}"></div>
 
-<div class="container mt-5">
-    <h2 class="mb-4 text-center text-light">Society Members and their Family Details</h2>
-    <div class="table-responsive bg-dark p-4 rounded shadow">
-        <table class="table table-hover table-bordered table-striped text-white">
-            <thead class="table-primary text-dark">
-                <tr>
-                    <th>#</th>
-                    <th>User Name</th>
-                    <th>Email</th>
-                    <th>No. of Members</th>
-                    <th>Family Members</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="user, stat : ${memberUsers}">
-                    <td th:text="${stat.count}">1</td>
-                    <td th:text="${user.name}">User Name</td>
-                    <td th:text="${user.email}">user@example.com</td>
-                    <td th:text="${user.numberOfMembers}">2</td>
-                    <td>
-                        <ul class="mb-0">
-                            <li th:each="member : ${user.members}" th:text="${member.name}">Family Member</li>
-                        </ul>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+    <div class="container mt-5">
+        <h2 class="mb-4 text-center text-light">Society Members and Their Family Details</h2>
+        <div class="table-responsive bg-dark p-4 rounded shadow">
+            <table class="table table-hover table-bordered table-striped text-white align-middle">
+                <thead class="table-primary text-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>User Name</th>
+                        <th>Email</th>
+                        <th>No. of Family Members</th>
+                        <th>Family Details (Name & Age)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="user, stat : ${memberUsers}">
+                        <td th:text="${stat.count}">1</td>
+                        <td th:text="${user.name}">User Name</td>
+                        <td th:text="${user.email}">user@example.com</td>
+                        <td th:text="${user.numberOfMembers}">2</td>
+                        <td>
+                            <ul class="mb-0 list-unstyled">
+                                <li th:each="member : ${user.members}">
+                                    <i class="bi bi-person-circle me-2 text-info"></i>
+                                    <span th:text="${member.name}">Name</span> 
+                                    - <span th:text="'Age: ' + ${member.age}">Age</span>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

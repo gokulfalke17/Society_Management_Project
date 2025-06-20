@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Member Payments</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body style="font-family: 'Inter', sans-serif; background: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.9)), url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=2070&q=80') no-repeat center center fixed; background-size: cover; min-height: 100vh; color: #f5f5f5;">
+
+    <div th:replace="~{fragments/secretary-navbar :: secretary-navbar}"></div>
+
+<div class="container mt-5">
+    <div class="card border-0 shadow-lg">
+        <div class="card-header bg-info bg-gradient text-white">
+            <div class="d-flex justify-content-between align-items-center">
+                <h3 class="mb-0 fw-bold"><i class="bi bi-credit-card me-2"></i>Member Payments</h3>
+                <div class="input-group w-auto">
+                    <span class="input-group-text bg-white text-dark border-0">
+                        <i class="bi bi-search"></i>
+                    </span>
+                    <input type="text" class="form-control border-0" placeholder="Search payments...">
+                </div>
+            </div>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-dark">
+                        <tr>
+                            <th class="ps-4">
+                                <span class="d-flex align-items-center">
+                                    <i class="bi bi-person me-2 text-primary"></i>Member_Name
+                                </span>
+                            </th>
+                            <th>
+                                <span class="d-flex align-items-center">
+                                    <i class="bi bi-envelope me-2 text-warning"></i>Email
+                                </span>
+                            </th>
+                            <th>
+                                <span class="d-flex align-items-center">
+                                    <i class="bi bi-cash-coin me-2 text-success"></i>Amount
+                                </span>
+                            </th>
+                            <th>
+                                <span class="d-flex align-items-center">
+                                    <i class="bi bi-credit-card-2-front me-2 text-info"></i>Payment_Mode
+                                </span>
+                            </th>
+                            <th>
+                                <span class="d-flex align-items-center">
+                                    <i class="bi bi-card-text me-2 text-secondary"></i>Purpose
+                                </span>
+                            </th>
+                            <th class="pe-4">
+                                <span class="d-flex align-items-center">
+                                    <i class="bi bi-calendar-check me-2 text-danger"></i>Payment_Date
+                                </span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white text-dark">
+                        <tr th:each="payment : ${memberPayments}" class="border-bottom">
+                            <td class="ps-4 fw-semibold" th:text="${payment.user.name}"></td>
+                            <td th:text="${payment.user.email}"></td>
+                            <td>
+                                <span class="badge bg-success bg-opacity-10 text-success py-2 px-3 rounded-pill fw-normal" th:text="'$' + ${payment.amount}"></span>
+                            </td>
+                            <td>
+                                <span th:class="${payment.modeOfPayment == 'Cash' ? 'badge bg-info bg-opacity-10 text-info' : 'badge bg-primary bg-opacity-10 text-primary'}" class="py-2 px-3 rounded-pill fw-normal" th:text="${payment.modeOfPayment}"></span>
+                            </td>
+                            <td th:text="${payment.purpose}"></td>
+                            <td class="pe-4 text-muted" th:text="${payment.paymentDate}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

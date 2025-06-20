@@ -16,8 +16,9 @@ import com.society.entity.User;
 @Repository
 public interface IMemberRepository extends JpaRepository<Member, Integer> {
 
-	@Query("SELECT m.name FROM Member m WHERE m.user.userId = :id")
-	public List<String> getMemberNames(@Param("id") Integer id);
+	
+	@Query("SELECT m FROM Member m WHERE m.user.userId = :userId")
+	public List<Member> findMembersByUserId(@Param("userId") Integer userId);
 	
 	@Query("FROM User u WHERE u.email = :email AND u.role = :role")
 	Optional<User> memberLogin(@Param("email") String email, @Param("role") User.Role role);

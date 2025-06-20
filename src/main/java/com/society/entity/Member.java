@@ -18,6 +18,8 @@ public class Member {
     private Integer id;
 
     private String name;
+    
+    private Integer age;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Member Attendance</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-dark text-light" style="font-family: 'Inter', sans-serif;">
+
+    <div th:replace="~{fragments/secretary-navbar :: secretary-navbar}"></div>
+
+    <div class="container mt-5 py-4">
+        <div class="card bg-secondary bg-gradient text-white shadow-lg rounded-4 p-4 p-md-5">
+            <h3 class="mb-4 text-center text-primary fw-bold">
+                <i class="bi bi-clock-history me-2"></i> Member Check-In / Check-Out
+            </h3>
+
+            <div class="mb-4">
+                <label for="userId" class="form-label text-info fw-bold">Select Member:</label>
+                <select id="userId" class="form-select form-select-lg bg-dark text-light border-primary">
+                    <option value="" class="text-muted">-- Select Member --</option>
+                    <option th:each="member : ${members}" th:value="${member.userId}" th:text="${member.firstName + ' ' + member.lastName + ' (ID: ' + member.userId + ')'}" class="text-light"></option>
+                </select>
+            </div>
+
+            <div class="d-grid gap-3 d-md-flex justify-content-md-center">
+                <button class="btn btn-success btn-lg px-4 flex-grow-1" onclick="markAttendance('checkin')">
+                    <i class="bi bi-box-arrow-in-right me-2"></i> Check-In
+                </button>
+                <button class="btn btn-danger btn-lg px-4 flex-grow-1" onclick="markAttendance('checkout')">
+                    <i class="bi bi-box-arrow-left me-2"></i> Check-Out
+                </button>
+            </div>
+
+            <div id="response" class="mt-4" style="display: none;"></div>
+        </div>
+    </div>
+
+    <script>
+        function markAttendance(type) {
+            const userId = document.getElementById("userId").value;
+            if (!userId) {
+                const responseDiv = document.getElementById("response");
+                responseDiv.style.display = "block";
+                responseDiv.innerHTML = `
+                    <div class="alert alert-warning alert-dismissible fade show fw-bold" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>Please select a member.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>`;
+                return;
+            }
+
+            fetch(`/${type}/${userId}`, { method: 'POST' })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(text => { throw new Error(text) });
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    const responseDiv = document.getElementById("response");
+                    responseDiv.style.display = "block";
+                    responseDiv.innerHTML = `
+                        <div class="alert alert-success alert-dismissible fade show fw-bold" role="alert">
+                            <i class="bi bi-check-circle-fill me-2"></i>${data}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>`;
+                })
+                .catch(err => {
+                    const responseDiv = document.getElementById("response");
+                    responseDiv.style.display = "block";
+                    responseDiv.innerHTML = `
+                        <div class="alert alert-danger alert-dismissible fade show fw-bold" role="alert">
+                            <i class="bi bi-x-circle-fill me-2"></i>Error: ${err.message || err}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>`;
+                });
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
