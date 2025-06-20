@@ -37,49 +37,13 @@ public class FinanceController {
 		return "member-payments";
 	}
 
-	@GetMapping("/payments/{userId}")
+	/*@GetMapping("/payments/{userId}")
 	public ResponseEntity<List<Payment>> getUserPayments(@PathVariable("userId") Integer userId) {
 		return ResponseEntity.ok(financeService.getUserPayments(userId));
-	}
+	}*/
 
 	
-	// ---- Transaction APIs ----
-	
-	/*
-	@PostMapping("/transaction/{secretaryId}")
-	public ResponseEntity<Transaction> saveTransaction(@PathVariable("secretaryId") Integer secretaryId,
-			@RequestBody Transaction transaction) {
-		return ResponseEntity.ok(financeService.saveTransaction(secretaryId, transaction));
-	}
-	
-	@GetMapping("/transaction/form")
-	public String showTransactionForm(Model model) {
-	    Transaction transaction = new Transaction();
-	    model.addAttribute("transaction", transaction);
-	    model.addAttribute("secretaryId", 1);
-	    return "add-transaction";
-	}
-	
-	@PostMapping("/transaction/form/save")
-	public String saveTransactionFromForm(@RequestParam("secretaryId") Integer secretaryId,
-	                                      @ModelAttribute Transaction transaction) {
-	    financeService.saveTransaction(secretaryId, transaction);
-	    return "redirect:/transactions/" + secretaryId; 
-	}
-	
-	@GetMapping("/transactions")
-	public ResponseEntity<List<Transaction>> getAllTransactions() {
-		return ResponseEntity.ok(financeService.getAllTransactions());
-	}
-	
-	 @GetMapping("/transactions/{secretaryId}")
-	    public String showSecretaryTransactions(@PathVariable("secretaryId") Integer secretaryId, Model model) {
-	        List<Transaction> transactions = financeService.getSecretaryTransactions(secretaryId);
-	        model.addAttribute("transactions", transactions);
-	        return "transactions"; 
-	    }*/
-
-	
+// ---- Transaction APIs ----
 	
 	@GetMapping("/transactions/form/{secretaryId}")
 	public String showTransactionForm(@PathVariable("secretaryId") Integer secretaryId, Model model) {
@@ -96,13 +60,6 @@ public class FinanceController {
 	}
 	
 	
-	
-	/*@PostMapping("/transaction/{secretaryId}")
-	public ResponseEntity<Transaction> saveTransaction(@PathVariable("secretaryId") Integer secretaryId,
-			@RequestBody Transaction transaction) {
-		return ResponseEntity.ok(financeService.saveTransaction(secretaryId, transaction));
-	}*/
-
 	@GetMapping("/transactions")
 	public String showAllTransactions(Model model) {
 		List<Transaction> transactions = financeService.getAllTransactions();
