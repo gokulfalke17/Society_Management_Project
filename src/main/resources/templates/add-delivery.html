@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Add Delivery</title>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+<body class="bg-dark text-light" style="font-family: Inter, sans-serif">
+
+<div th:replace="~{fragments/security-navbar :: security-navbar}"></div>
+
+<div class="container mt-5">
+    <div class="card bg-secondary bg-opacity-10 border-0 shadow-lg">
+        <div class="card-header bg-info bg-gradient text-light">
+            <h4 class="mb-0"><i class="bi bi-box-arrow-in-down me-2"></i>Log New Delivery</h4>
+        </div>
+
+        <div class="card-body p-4">
+            <form th:action="@{/security/deliveries/save}" method="post" th:object="${delivery}">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold text-light"><i class="bi bi-person-fill"></i> Sender Name</label>
+                        <input class="form-control" th:field="*{senderName}" placeholder="e.g. BlueDart, FedEx…" required>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold text-light"><i class="bi bi-person-check-fill "></i> Recipient Name</label>
+                        <input class="form-control" th:field="*{recipientName}" placeholder="e.g. Jethalal" required>
+                    </div>
+
+                    <div class="col-md-12">
+                        <label class="form-label fw-bold text-light"><i class="bi bi-box-seam "></i> Item Description</label>
+                        <input class="form-control" th:field="*{itemDescription}" placeholder="Small parcel, documents..." required>
+                    </div>
+                </div>
+
+                <div class="text-end mt-4">
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-save me-1"></i>Save Delivery
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

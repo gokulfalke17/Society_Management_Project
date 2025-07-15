@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Member-wise Visitors</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+<body class="bg-dark text-light" style="font-family:Inter, sans-serif">
+
+    <div th:replace="~{fragments/security-navbar :: security-navbar}"></div>
+
+    <div class="container mt-5">
+        <h3 class="mb-3">
+            <i class="bi bi-people me-2"></i>
+            Visitors for <span class="text-info" th:text="${visitors[0]?.member.name}">Member</span>
+        </h3>
+
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle text-white">
+                <thead class="table-secondary text-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Visitor Name</th>
+                        <th>Phone</th>
+                        <th>Purpose</th>
+                        <th>Check-In</th>
+                        <th>Check-Out</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="v,stat : ${visitors}">
+                        <td th:text="${stat.count}">1</td>
+                        <td th:text="${v.visitorName}">Visitor</td>
+                        <td th:text="${v.phoneNo}">Phone</td>
+                        <td th:text="${v.purpose}">Purpose</td>
+                        <td th:text="${#temporals.format(v.checkInTime,'dd-MMM HH:mm')}">in</td>
+                        <td th:text="${v.checkOutTime != null ? #temporals.format(v.checkOutTime,'dd-MMM HH:mm') : '-'}">out</td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(visitors)}">
+                        <td colspan="6" class="text-center py-4">No visitors for this member.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

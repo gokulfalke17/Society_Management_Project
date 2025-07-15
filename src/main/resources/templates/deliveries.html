@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>All Deliveries</title>
+<meta charset="UTF-8">
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+	rel="stylesheet">
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+	rel="stylesheet">
+</head>
+<body class="bg-dark text-light" style="font-family: Inter, sans-serif">
+
+	<div th:replace="~{fragments/security-navbar :: security-navbar}"></div>
+
+	<div class="container mt-5">
+		<h3 class="mb-3">
+			<i class="bi bi-card-list me-2"></i>All Deliveries
+		</h3>
+
+		<div class="table-responsive">
+			<table
+				class="table table-bordered table-hover align-middle text-white">
+				<thead class="table-info text-dark">
+					<tr>
+						<th>#</th>
+						<th>Courier</th>
+						<th>Description</th>
+						<th>Member Name</th>
+						<th>Received Time</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="d,stat : ${deliveries}">
+						<td th:text="${stat.count}">1</td>
+						<td th:text="${d.senderName}">Sender</td>
+						<td th:text="${d.itemDescription}">Item</td>
+						<td th:text="${d.recipientName}">Recipient</td>
+						<td th:text="${#temporals.format(d.receivedAt, 'dd-MMM HH:mm')}">Time</td>
+
+					</tr>
+
+					<tr th:if="${#lists.isEmpty(deliveries)}">
+						<td colspan="5" class="text-center py-4">No deliveries logged
+							yet.</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
